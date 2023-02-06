@@ -21,5 +21,23 @@ export const categoriesAPI = {
             })
     }
 }
+export const cartAPI = {
+    createCart(cart: any): Promise<any> {
+        return instance.post('carts/add', {
+            ...cart
+        }).then(response => {
+            return response.data
+        })
+    }
+}
+export const userAPI = {
+    createUser(user: any): Promise<any> {
+        return instance.post('users/add', {
+            ...user
+        }).then(response => {
+            return response.data
+        })
+    }
+}
 
 
