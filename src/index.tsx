@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import {Provider} from "react-redux";
 import {Home} from "./pages/Home";
 import {store} from "./store/store";
+import {Cart} from "./pages/Cart";
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -15,6 +16,7 @@ root.render(
             <Routes>
                 <Route element={<Base/>}>
                     <Route path="/" element={<Home/>}/>
+                    <Route path="/cart" element={<Cart/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>
