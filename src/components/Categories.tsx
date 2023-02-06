@@ -3,13 +3,13 @@ import {useEffect, useState} from "react";
 import {fetchCategories} from "../store/reducers/categoriesSlice";
 import {Link} from "react-router-dom";
 import {useAppSelector} from "../store/store";
-import {Box, List, ListItemButton, ListItemText} from "@mui/material";
+import {Box, CircularProgress, List, ListItemButton, ListItemText, Typography} from "@mui/material";
 import {KeyboardArrowDown} from "@mui/icons-material";
 
 export function ListItemLink(props: any) {
     const {primary, to} = props
     return (
-        <ListItemButton alignItems={"center"} component={Link} to={to} >
+        <ListItemButton alignItems={"center"} component={Link} to={to}>
             <ListItemText primary={primary} sx={{m: "0px"}}/>
         </ListItemButton>
     )
@@ -17,7 +17,7 @@ export function ListItemLink(props: any) {
 
 export const Categories = () => {
     const dispatch = useDispatch()
-    const categoriesAll = useAppSelector(state => state.categories.categories)
+    const categoriesAll = useAppSelector(state => state.categories)
     const [open, setOpen] = useState(true)
     useEffect(() => {
         dispatch(fetchCategories())
@@ -31,10 +31,9 @@ export const Categories = () => {
                 sx={{
                     px: 3,
                     pb: 0,
-                    mt:3,
+                    mt: 3,
                     '&:hover, &:focus': {'& svg': {opacity: open ? 1 : 0}}
-                }}
-            >
+                }}>
                 <ListItemText
                     primary="Categories"
                     primaryTypographyProps={{
@@ -42,8 +41,7 @@ export const Categories = () => {
                         fontWeight: 'medium',
                         lineHeight: '2px',
                         mb: '2px'
-                    }}
-                />
+                    }}/>
                 <KeyboardArrowDown
                     sx={{
                         mr: 0,
@@ -51,17 +49,19 @@ export const Categories = () => {
                         transform: open ? 'rotate(-180deg)' : 'rotate(0)',
                         transition: '0.2s',
                         alignContent: 'center'
-                    }}
-                />
+                    }}/>
             </ListItemButton>
-            {open &&
-                <List sx={{ width: '100%'}} aria-label="categories" >
-                    {categoriesAll.map((el: string) => (
+            {categoriesAll.status === 'loading' && <CircularProgress/>}
+            {categoriesAll.status === 'rejected' && <Typography>{categoriesAll.error}</Typography>}
+            {open && categoriesAll.status === 'resolved' &&
+                <List sx={{width: '100%'}} aria-label="categories">
+                    {categoriesAll.categories.map((el: string) => (
                         <ListItemLink key={el} primary={el} to={`/category/${el}`}/>
                     ))}
                 </List>
             }
-
         </Box>
     )
 }
+
+
