@@ -7,6 +7,7 @@ import {Provider} from "react-redux";
 import {Home} from "./pages/Home";
 import {store} from "./store/store";
 import {Cart} from "./pages/Cart";
+import {ProductsCategory} from "./pages/ProductsCategory";
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
@@ -17,6 +18,7 @@ root.render(
                 <Route element={<Base/>}>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/cart" element={<Cart/>}/>
+                    <Route path="category/:categoryName" element={<ProductsCategory/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

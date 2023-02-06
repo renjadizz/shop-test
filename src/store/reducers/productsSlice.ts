@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, isAnyOf} from "@reduxjs/toolkit";
 import {productsAPI} from '../../API/API';
 
 export type ProductType = {
@@ -14,7 +14,7 @@ export type ProductType = {
     thumbnail: string,
     images: [string]
 }
-type ProductsType = {
+export type ProductsType = {
     total: number,
     products: [ProductType] | [],
     status: string,
@@ -41,30 +41,57 @@ export const fetchProductsPopular = createAsyncThunk(
         }
     }
 )
+export const fetchProductsByCategory = createAsyncThunk(
+    'products/fetchProductsByCategory',
+    async function (categoryName: string | undefined, thunkAPI) {
+        try {
+            const state: any = thunkAPI.getState()
+            const toSkip = (state.products.currentPage - 1) * state.products.pageSize
+            const response = await productsAPI.getProductsByCategory(categoryName, state.products.pageSize, toSkip)
+            return response
+        } catch (error) {
+            return thunkAPI.rejectWithValue((error as Error).message)
+        }
+    }
+)
+export const fetchProductsTotal = createAsyncThunk(
+    'products/fetchProductsTotal',
+    async function (_, thunkAPI) {
+        try {
+            const response = await productsAPI.getProductsTotal()
+            return response
+        } catch (error) {
+            return thunkAPI.rejectWithValue((error as Error).message)
+        }
+    }
+)
 const productsSlice = createSlice({
     name: "products",
     initialState,
     reducers: {
-        addProduct(state, action) {
-            // state.products.push({})
+        changeCurrentPage(state, action) {
+            state.currentPage = action.payload
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchProductsPopular.fulfilled, (state, action) => {
-            state.status = "resolved"
-            state.products = action.payload.products
-            state.total = action.payload.total
-        })
-        builder.addCase(fetchProductsPopular.pending, (state, action) => {
-            state.status = "loading"
-            state.error = null
-        })
-        builder.addCase(fetchProductsPopular.rejected, (state, action) => {
-            state.status = "rejected"
-            state.error = action.payload
-        })
+        builder.addMatcher(isAnyOf(fetchProductsPopular.fulfilled, fetchProductsByCategory.fulfilled, fetchProductsTotal.fulfilled),
+            (state, action) => {
+                state.status = "resolved"
+                state.products = action.payload.products
+                state.total = action.payload.total
+            })
+        builder.addMatcher(isAnyOf(fetchProductsPopular.pending, fetchProductsByCategory.pending, fetchProductsTotal.pending),
+            (state, action) => {
+                state.status = "loading"
+                state.error = null
+            })
+        builder.addMatcher(isAnyOf(fetchProductsPopular.rejected, fetchProductsByCategory.rejected, fetchProductsTotal.rejected),
+            (state, action) => {
+                state.status = "rejected"
+                state.error = action.payload
+            })
     },
 })
 
-export const {addProduct} = productsSlice.actions
+export const {changeCurrentPage} = productsSlice.actions
 export default productsSlice.reducer

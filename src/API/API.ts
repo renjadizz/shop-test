@@ -11,6 +11,18 @@ export const productsAPI = {
             .then(response => {
                 return response.data
             })
+    },
+    getProductsByCategory(category: any, pageSize: number, toSkip: number): Promise<any> {
+        return instance.get(`products/category/${category}?limit=${pageSize}&skip=${toSkip}`)
+            .then(response => {
+                return response.data
+            })
+    },
+    getProductsTotal(): Promise<any> {
+        return instance.get(`products?limit=1&select=total`)
+            .then(response => {
+                return response.data
+            })
     }
 }
 export const categoriesAPI = {
