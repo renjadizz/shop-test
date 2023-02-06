@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {Box, Grid, Typography} from "@mui/material";
 import {Image} from "mui-image";
 
-type ProductPropsType = {
+export type ProductPropsType = {
     product: ProductType
 }
 export const ProductsList = ({product}: ProductPropsType) => {
@@ -20,7 +20,7 @@ export const ProductsList = ({product}: ProductPropsType) => {
                         <Typography>{product.description}</Typography>
                     </Grid>
                     <Grid item xs={4} sx={{textAlign: "center"}}>
-                        <ProductListCart/>
+                        <ProductListCart product={product}/>
                     </Grid>
                 </Grid>
             </Box>
