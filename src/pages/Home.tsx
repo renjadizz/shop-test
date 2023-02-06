@@ -1,5 +1,5 @@
 import {useEffect} from "react";
-import {fetchProductsPopular, ProductsType, ProductType} from "../store/reducers/productsSlice";
+import {fetchProductsPopular} from "../store/reducers/productsSlice";
 import {useAppDispatch, useAppSelector} from "../store/store";
 import {ProductsRows} from "../components/products/ProductsRows";
 

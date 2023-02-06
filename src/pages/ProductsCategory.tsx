@@ -6,7 +6,6 @@ import {
     fetchProductsTotal
 } from "../store/reducers/productsSlice";
 import {useAppDispatch, useAppSelector} from "../store/store";
-import {Pagination} from "@mui/material";
 import {ProductsRows} from "../components/products/ProductsRows";
 
 export const ProductsCategory = () => {
@@ -29,9 +28,8 @@ export const ProductsCategory = () => {
     let countNumber = Math.ceil(productsByCategory.total / productsByCategory.pageSize)
     return (
         <>
-            <ProductsRows products={productsByCategory}/>
-            <Pagination page={productsByCategory.currentPage} count={countNumber} size="small"
-                        onChange={handlePaginationChange} sx={{float: "right"}}/>
+            <ProductsRows products={productsByCategory} countNumber={countNumber}
+                          onChangeCallback={handlePaginationChange}/>
         </>
     )
 }
