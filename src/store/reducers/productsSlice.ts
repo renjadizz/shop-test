@@ -65,6 +65,17 @@ export const fetchProductsTotal = createAsyncThunk(
         }
     }
 )
+export const fetchProduct = createAsyncThunk(
+    'products/fetchProduct',
+    async function (productId: string, thunkAPI) {
+        try {
+            const response = await productsAPI.getProduct(productId)
+            return response
+        } catch (error) {
+            return thunkAPI.rejectWithValue((error as Error).message)
+        }
+    }
+)
 const productsSlice = createSlice({
     name: "products",
     initialState,
@@ -74,18 +85,22 @@ const productsSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
+        builder.addCase(fetchProduct.fulfilled, (state, action) => {
+            state.status = "resolved"
+            state.products = [action.payload]
+        })
         builder.addMatcher(isAnyOf(fetchProductsPopular.fulfilled, fetchProductsByCategory.fulfilled, fetchProductsTotal.fulfilled),
             (state, action) => {
                 state.status = "resolved"
                 state.products = action.payload.products
                 state.total = action.payload.total
             })
-        builder.addMatcher(isAnyOf(fetchProductsPopular.pending, fetchProductsByCategory.pending, fetchProductsTotal.pending),
+        builder.addMatcher(isAnyOf(fetchProductsPopular.pending, fetchProductsByCategory.pending, fetchProductsTotal.pending, fetchProduct.pending),
             (state, action) => {
                 state.status = "loading"
                 state.error = null
             })
-        builder.addMatcher(isAnyOf(fetchProductsPopular.rejected, fetchProductsByCategory.rejected, fetchProductsTotal.rejected),
+        builder.addMatcher(isAnyOf(fetchProductsPopular.rejected, fetchProductsByCategory.rejected, fetchProductsTotal.rejected, fetchProduct.rejected),
             (state, action) => {
                 state.status = "rejected"
                 state.error = action.payload

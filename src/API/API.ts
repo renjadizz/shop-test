@@ -23,6 +23,12 @@ export const productsAPI = {
             .then(response => {
                 return response.data
             })
+    },
+    getProduct(productId: string): Promise<any> {
+        return instance.get(`products/${productId}`)
+            .then(response => {
+                return response.data
+            })
     }
 }
 export const categoriesAPI = {
