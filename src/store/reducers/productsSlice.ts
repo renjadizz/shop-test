@@ -19,20 +19,26 @@ type ProductsType = {
     products: [ProductType] | [],
     status: string,
     pageSize: number,
-    currentPage: number
+    currentPage: number,
+    error: any
 }
 const initialState: ProductsType = {
     total: 0,
     products: [],
     status: "null",
     pageSize: 2,
-    currentPage: 1
+    currentPage: 1,
+    error: null
 }
 export const fetchProductsPopular = createAsyncThunk(
     'products/fetchProducts',
-    async function () {
-        const response = await productsAPI.getProductsByPopularity()
-        return response
+    async function (_, thunkAPI) {
+        try {
+            const response = await productsAPI.getProductsByPopularity()
+            return response
+        } catch (error) {
+            return thunkAPI.rejectWithValue((error as Error).message)
+        }
     }
 )
 const productsSlice = createSlice({
@@ -48,6 +54,14 @@ const productsSlice = createSlice({
             state.status = "resolved"
             state.products = action.payload.products
             state.total = action.payload.total
+        })
+        builder.addCase(fetchProductsPopular.pending, (state, action) => {
+            state.status = "loading"
+            state.error = null
+        })
+        builder.addCase(fetchProductsPopular.rejected, (state, action) => {
+            state.status = "rejected"
+            state.error = action.payload
         })
     },
 })
