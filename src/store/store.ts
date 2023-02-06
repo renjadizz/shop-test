@@ -2,10 +2,12 @@ import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import productsSlice from "./reducers/productsSlice";
 import categoriesSlice from "./reducers/categoriesSlice";
+import cartSlice from "./reducers/cartSlice";
 
 const rootReducer = combineReducers({
     products: productsSlice,
-    categories: categoriesSlice
+    categories: categoriesSlice,
+    cart: cartSlice
 })
 export const store = configureStore({
     reducer: rootReducer
