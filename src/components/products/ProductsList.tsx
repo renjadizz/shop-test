@@ -16,7 +16,8 @@ export const ProductsList = ({product}: ProductPropsType) => {
                     <Grid item xs={2}><Image width={120} height={120} fit={"contain"} src={product.thumbnail}/></Grid>
                     <Grid item xs={6}>
                         <Typography sx={{paddingTop: "15px"}} variant={"h6"}><Link
-                            to={`/product/${product.id}`}>{product.title}</Link></Typography>
+                            to={`/product/${product.id}`}
+                            style={{textDecoration: 'none'}}>{product.title}</Link></Typography>
                         <Typography>{product.description}</Typography>
                     </Grid>
                     <Grid item xs={4} sx={{textAlign: "center"}}>

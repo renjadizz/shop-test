@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../store/store";
-import {changeCart, confirmOrder, deleteProductInCart, emptyCart} from "../store/reducers/cartSlice";
+import {changeCart, confirmOrder, deleteProductInCart} from "../store/reducers/cartSlice";
 import React, {useEffect, useState} from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -16,6 +16,7 @@ import {
     Typography
 } from "@mui/material";
 import {Image} from 'mui-image'
+import {Link} from "react-router-dom";
 
 export const Cart = () => {
     const cartInfo = useAppSelector(state => state.cart)
@@ -70,7 +71,9 @@ export const Cart = () => {
                                             <Image fit={"contain"} src={product.thumbnail}/>
                                         </Grid>
                                         <Grid display={"flex"} item xs={10} sx={{alignItems: "center", pl: 2}}>
-                                            <Typography variant={"h5"}>{product.title}</Typography>
+                                            <Typography variant={"h5"}><Link
+                                                to={`/product/${product.id}`}
+                                                style={{textDecoration: 'none'}}>{product.title}</Link></Typography>
                                         </Grid>
                                     </Grid>
                                 </TableCell>

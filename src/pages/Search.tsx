@@ -1,8 +1,6 @@
 import {useEffect} from "react";
-import {Box, Pagination, Typography} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../store/store";
-import {changeCurrentPage, fetchProductsBySearch, ProductType} from "../store/reducers/productsSlice";
-import {ProductsList} from "../components/products/ProductsList";
+import {changeCurrentPage, fetchProductsBySearch} from "../store/reducers/productsSlice";
 import {ProductsRows} from "../components/products/ProductsRows";
 
 export const Search = () => {
