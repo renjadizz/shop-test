@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Box, Button, CircularProgress, Grid, Typography} from "@mui/material";
 import {useEffect} from "react";
 import {fetchProduct} from "../store/reducers/productsSlice";
@@ -9,18 +9,30 @@ import {useAppDispatch, useAppSelector} from "../store/store";
 
 export const Product = () => {
     const {productId} = useParams()
+    const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+
     const productsAll = useAppSelector(state => state.products)
     const product = productsAll.products[0]
-    const dispatch = useAppDispatch()
+
     useEffect(() => {
         if (productId) {
             dispatch(fetchProduct(productId))
         }
     }, [])
+
     const handleClick = () => {
         const productWithAmount = {...product, quantity: 1, priceSum: product?.price}
         dispatch(addToCart(productWithAmount))
     }
+    const handleClickAdd = () => {
+        handleClick()
+    }
+    const handleClickBuy = () => {
+        handleClick()
+        navigate('/cart')
+    }
+
     return (
         <>
             {productsAll.status === "loading" &&
@@ -50,8 +62,9 @@ export const Product = () => {
                             <Typography variant="h5" sx={{m: "5px 0"}}>About Product</Typography>
                             <Typography sx={{m: "2px"}}>{product.description}</Typography>
                             <Box sx={{textAlign: "center"}}>
-                                <Button size="small" variant="outlined" sx={{m: "5px"}}>Buy</Button>
-                                <Button size="small" onClick={handleClick} variant="outlined" sx={{m: "5px"}}>Add to
+                                <Button size="small" onClick={handleClickBuy} variant="outlined"
+                                        sx={{m: "5px"}}>Buy</Button>
+                                <Button size="small" onClick={handleClickAdd} variant="outlined" sx={{m: "5px"}}>Add to
                                     Cart</Button>
                             </Box>
                             <Typography align={"right"}>Price: {product.price}</Typography>
