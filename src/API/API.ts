@@ -29,6 +29,12 @@ export const productsAPI = {
             .then(response => {
                 return response.data
             })
+    },
+    getProductsBySearch(searchField: string, pageSize: number, toSkip: number): Promise<any> {
+        return instance.get(`products/search?q=${searchField}&limit=${pageSize}&skip=${toSkip}`)
+            .then(response => {
+                return response.data
+            })
     }
 }
 export const categoriesAPI = {

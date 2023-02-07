@@ -76,6 +76,19 @@ export const fetchProduct = createAsyncThunk(
         }
     }
 )
+export const fetchProductsBySearch = createAsyncThunk(
+    'products/fetchProductsBySearch',
+    async function (searchString: string, thunkAPI) {
+        const state: any = thunkAPI.getState()
+        const toSkip = (state.products.currentPage - 1) * 10
+        try {
+            const response = await productsAPI.getProductsBySearch(searchString, 10, toSkip)
+            return response
+        } catch (error) {
+            return thunkAPI.rejectWithValue((error as Error).message)
+        }
+    }
+)
 const productsSlice = createSlice({
     name: "products",
     initialState,
@@ -89,18 +102,21 @@ const productsSlice = createSlice({
             state.status = "resolved"
             state.products = [action.payload]
         })
-        builder.addMatcher(isAnyOf(fetchProductsPopular.fulfilled, fetchProductsByCategory.fulfilled, fetchProductsTotal.fulfilled),
+        builder.addMatcher(isAnyOf(fetchProductsPopular.fulfilled, fetchProductsByCategory.fulfilled, fetchProductsTotal.fulfilled,
+                fetchProductsBySearch.fulfilled),
             (state, action) => {
                 state.status = "resolved"
                 state.products = action.payload.products
                 state.total = action.payload.total
             })
-        builder.addMatcher(isAnyOf(fetchProductsPopular.pending, fetchProductsByCategory.pending, fetchProductsTotal.pending, fetchProduct.pending),
+        builder.addMatcher(isAnyOf(fetchProductsPopular.pending, fetchProductsByCategory.pending, fetchProductsTotal.pending, fetchProduct.pending,
+                fetchProductsBySearch.pending),
             (state, action) => {
                 state.status = "loading"
                 state.error = null
             })
-        builder.addMatcher(isAnyOf(fetchProductsPopular.rejected, fetchProductsByCategory.rejected, fetchProductsTotal.rejected, fetchProduct.rejected),
+        builder.addMatcher(isAnyOf(fetchProductsPopular.rejected, fetchProductsByCategory.rejected, fetchProductsTotal.rejected, fetchProduct.rejected,
+                fetchProductsBySearch.rejected),
             (state, action) => {
                 state.status = "rejected"
                 state.error = action.payload
