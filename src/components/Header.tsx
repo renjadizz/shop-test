@@ -3,9 +3,25 @@ import {CartMini} from "../components/cart/CartMini"
 import {Box, Grid, TextField, Typography} from "@mui/material";
 import {Image} from "mui-image";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket'
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../store/store";
+import {useState} from "react";
+import {changeSearch} from "../store/reducers/searchSlice";
 
 export const Header = () => {
+    const dispatch = useAppDispatch()
+    const searchInitial = useAppSelector(state => state.search.searchField)
+    const [searchString, setSearchString] = useState(searchInitial)
+    const navigate = useNavigate()
+    const handleSearchChange = (event: any) => {
+        setSearchString(event.target.value)
+    }
+    const handleSearchKeyPress = (event: any) => {
+        if (event.keyCode == 13) {
+            dispatch(changeSearch(searchString))
+            navigate('/search')
+        }
+    }
     return (
         <>
             <Box sx={{display: "flex"}}>
@@ -25,7 +41,8 @@ export const Header = () => {
                     justifyContent: "space-around"
                 }}>
                     <TextField margin="normal" size="medium" id="outlined-basic" label="Search"
-                               variant="outlined"/>
+                               variant="outlined" value={searchString} onChange={handleSearchChange}
+                               onKeyDown={handleSearchKeyPress}/>
                 </Box>
                 <Grid container width={"20%"}>
                     <Grid item xs={2} sx={{p: "5px"}}>

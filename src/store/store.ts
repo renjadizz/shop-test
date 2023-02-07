@@ -4,11 +4,13 @@ import productsSlice from "./reducers/productsSlice";
 import categoriesSlice from "./reducers/categoriesSlice";
 import cartSlice from "./reducers/cartSlice";
 import {listenerMiddleware} from "./listenerMiddleware";
+import searchSlice from "./reducers/searchSlice";
 
 const rootReducer = combineReducers({
     products: productsSlice,
     categories: categoriesSlice,
-    cart: cartSlice
+    cart: cartSlice,
+    search: searchSlice
 })
 const reHydrateStore = () => {
     if (localStorage.getItem('cart') !== null) {
