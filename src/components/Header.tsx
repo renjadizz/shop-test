@@ -18,7 +18,7 @@ export const Header = () => {
         setSearchString(event.target.value)
     }
     const handleSearchKeyPress = (event: any) => {
-        if (event.keyCode == 13) {
+        if (event.keyCode === 13) {
             dispatch(changeSearch(searchString))
             navigate('/search')
         }
