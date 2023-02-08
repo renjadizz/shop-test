@@ -2,7 +2,7 @@
   "name": "shop-test",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://https://renjadizz.github.io/shop-test",
+  "homepage": "https://renjadizz.github.io/shop-test",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
