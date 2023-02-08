@@ -7,10 +7,11 @@ import {
 } from "../store/reducers/productsSlice";
 import {useAppDispatch, useAppSelector} from "../store/store";
 import {ProductsRows} from "../components/products/ProductsRows";
+import {selectProducts} from "../store/selectors";
 
 export const ProductsCategory = () => {
     const dispatch = useAppDispatch()
-    const productsByCategory = useAppSelector(state => state.products)
+    const productsByCategory = useAppSelector(selectProducts)
     const {categoryName} = useParams()
     useEffect(() => {
         dispatch(fetchProductsTotal)

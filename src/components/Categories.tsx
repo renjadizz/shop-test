@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {useAppSelector} from "../store/store";
 import {Box, CircularProgress, List, ListItemButton, ListItemText, Typography} from "@mui/material";
 import {KeyboardArrowDown} from "@mui/icons-material";
+import {selectCategories} from "../store/selectors";
 
 export function ListItemLink(props: any) {
     const {primary, to} = props
@@ -17,7 +18,7 @@ export function ListItemLink(props: any) {
 
 export const Categories = () => {
     const dispatch = useDispatch()
-    const categoriesAll = useAppSelector(state => state.categories)
+    const categoriesAll = useAppSelector(selectCategories)
     const [open, setOpen] = useState(true)
     useEffect(() => {
         dispatch(fetchCategories())

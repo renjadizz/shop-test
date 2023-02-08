@@ -2,10 +2,11 @@ import {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../store/store";
 import {changeCurrentPage, fetchProductsBySearch} from "../store/reducers/productsSlice";
 import {ProductsRows} from "../components/products/ProductsRows";
+import {selectSearchField} from "../store/selectors";
 
 export const Search = () => {
     const dispatch = useAppDispatch()
-    const searchField = useAppSelector(state => state.search.searchField)
+    const searchField = useAppSelector(selectSearchField)
     const productsBySearch = useAppSelector(state => state.products)
     useEffect(() => {
         dispatch(changeCurrentPage(1))

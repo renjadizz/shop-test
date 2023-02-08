@@ -7,10 +7,11 @@ import {Link, useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../store/store";
 import {useState} from "react";
 import {changeSearch} from "../store/reducers/searchSlice";
+import {selectSearchField} from "../store/selectors";
 
 export const Header = () => {
     const dispatch = useAppDispatch()
-    const searchInitial = useAppSelector(state => state.search.searchField)
+    const searchInitial = useAppSelector(selectSearchField)
     const [searchString, setSearchString] = useState(searchInitial)
     const navigate = useNavigate()
     const handleSearchChange = (event: any) => {

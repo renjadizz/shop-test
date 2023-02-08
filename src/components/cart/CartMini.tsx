@@ -1,9 +1,10 @@
 import {useAppSelector} from "../../store/store";
 import {Typography} from "@mui/material";
 import {Link} from "react-router-dom";
+import {selectCart} from "../../store/selectors";
 
 export const CartMini = () => {
-    const cartInfo = useAppSelector(state => state.cart)
+    const cartInfo = useAppSelector(selectCart)
     return (
         <>
             <Link to={"/cart"}><Typography variant={"h6"}>My Cart</Typography></Link>

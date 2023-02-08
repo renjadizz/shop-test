@@ -6,13 +6,14 @@ import {Image} from 'mui-image'
 import Carousel from "react-material-ui-carousel/dist/components/Carousel";
 import {addToCart} from "../store/reducers/cartSlice";
 import {useAppDispatch, useAppSelector} from "../store/store";
+import {selectProducts} from "../store/selectors";
 
 export const Product = () => {
     const {productId} = useParams()
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
-    const productsAll = useAppSelector(state => state.products)
+    const productsAll = useAppSelector(selectProducts)
     const product = productsAll.products[0]
 
     useEffect(() => {

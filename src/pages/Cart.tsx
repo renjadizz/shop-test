@@ -17,9 +17,10 @@ import {
 } from "@mui/material";
 import {Image} from 'mui-image'
 import {Link} from "react-router-dom";
+import {selectCart} from "../store/selectors";
 
 export const Cart = () => {
-    const cartInfo = useAppSelector(state => state.cart)
+    const cartInfo = useAppSelector(selectCart)
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [phone, setPhone] = useState("")
