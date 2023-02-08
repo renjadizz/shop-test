@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {ProductType} from "./productsSlice";
 import {cartAPI, userAPI} from "../../API/API";
 
-interface ProductTypeWithAmountType extends ProductType {
+export interface ProductTypeWithAmountType extends ProductType {
     quantity: number
     img: string
     priceSum: number
@@ -54,13 +54,12 @@ const cartSlice = createSlice({
         emptyCart(state, action) {
             state.cart = []
             state.totalPrice = 0
+            state.status = "null"
         }
     },
     extraReducers: (builder) => {
         builder.addCase(confirmOrder.fulfilled, (state, action) => {
             state.status = "resolved"
-            state.cart = []
-            state.totalPrice = 0
         })
         builder.addCase(confirmOrder.pending, (state, action) => {
             state.status = "loading"
@@ -83,9 +82,9 @@ export const confirmOrder = createAsyncThunk(
             state.cart.cart.map((product: ProductTypeWithAmountType) => {
                 postObject.products.push({id: product.id, quantity: product.quantity})
             })
+            thunkAPI.dispatch(emptyCart(state))
             const response = await cartAPI.createCart(postObject)
             return response
-            thunkAPI.dispatch(emptyCart)
         } catch (error) {
             return thunkAPI.rejectWithValue((error as Error).message)
         }
